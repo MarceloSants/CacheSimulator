@@ -13,7 +13,7 @@ public class CacheClass{
         this.sub = sub;
         hit = 0;
         miss = 0;
-        cache = new BlockClass(bsize)[nsets][assoc];
+        cache = new BlockClass[nsets][assoc];
         //cache = new int[this.nsets][assoc];
         gerador = new Random();
     }
@@ -27,10 +27,10 @@ public class CacheClass{
         }else{
             i = gerador.nextInt(assoc);
         }
-        if(cache[pos][i] == endereco){
+        if(cache[pos][i].espaco[0] == endereco){
             hit++;
         }else{
-            cache[pos][i] = endereco;
+            cache[pos][i].espaco[0] = endereco;
             miss++;
         }
         

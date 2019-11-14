@@ -25,6 +25,7 @@ public class simulator{
             System.out.println("Misses: " + cache.getMisses());
 
             lerIn.close();
+            ler.close();
         }catch(IOException e){
             System.out.println("Erro!");
         }
