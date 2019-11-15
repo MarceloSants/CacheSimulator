@@ -20,10 +20,11 @@ public class simulator{
             for(int j = 0; j < i; j++){
                 cache.putCache(lerIn.readInt());
             }
+            /*
             System.out.println();
             System.out.println("Hits: " + cache.getHits());
             System.out.println("Misses: " + cache.getMisses());
-
+            */
             lerIn.close();
             ler.close();
         }catch(IOException e){

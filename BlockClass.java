@@ -7,4 +7,8 @@ public class BlockClass{
         validade= false;
         espaco = new int[tam];
     }
+
+    public void validate(){
+        validade = true;
+    }
 }
