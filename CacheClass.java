@@ -3,14 +3,14 @@ public class CacheClass{
 
     //int cache[][];
     BlockClass cache[][];
-    int nsets, assoc;
+    int nsets, bsize, assoc;
     int hit, miss, cacheCount, compulsorio, conflito, capacidade;
     char sub;
     Random gerador;
     public CacheClass(int nsets, int bsize, int assoc, char sub){
 
         this.nsets = nsets;
-        //this.bsize = bsize;
+        this.bsize = bsize/4;
         this.assoc = assoc;
         this.sub = sub;
         cacheCount = 0;
@@ -32,13 +32,13 @@ public class CacheClass{
         gerador = new Random();
     }
 
-    public void putCache(int[] endereco){
+    public void putCache(int endereco){
 
-        int pos = endereco[0] % (nsets); //"pos" é o conjunto para qual será mapeada a informação. (Linha da matriz "cache")
+        int pos = endereco % (nsets); //"pos" é o conjunto para qual será mapeada a informação. (Linha da matriz "cache")
         int i;
-        System.out.print(endereco + " "); 
+        //System.out.print(endereco + " "); 
 
-        if(busca(int conj, int assoc, int bsize, int info)){
+        if(busca(endereco)){
             hit++;
         }else{
             //"i" é a via do conjunto. Se for assoc = 1 (Mapeamento direto) recebe 0, senão recebe um valor aleatório. 
@@ -69,17 +69,15 @@ public class CacheClass{
             }
         }
         //Teste commit vsCode
-
-        
         
     }
 
-    private boolean busca(int conj, int assoc, int bsize, int info){
+    private boolean busca(int end){
 
         for(int i = 0; i < assoc; i++) {
             for(int j = 0; j < bsize; j++){
-                if(cache[conj][i].espaco[j] == info){
-                    if(cache[conj][i].validade){
+                if(cache[nsets][i].espaco[j] == end){
+                    if(cache[nsets][i].validade){
                         return true;
                     }
                 }
@@ -88,7 +86,16 @@ public class CacheClass{
 
         return false;
     }
+    private int[] calc(int end){
+        int ends[] = new int[bsize];
 
+        int inicio = end - (end%bsize);
+        for(int i = 0; i < bsize; i++){
+            ends[i] = inicio + i;
+        }
+
+        return ends;
+    }
     /*
     public int getHits(){
         return hit;
