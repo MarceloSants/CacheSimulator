@@ -106,9 +106,9 @@ public class CacheClass{
         return miss;
     }
     */
-    public int[] getInfo(){
+    public double[] getInfo(){
 
-        int info[] = new int[5];
+        double info[] = new double[5];
 
         info[0] = hit;
         info[1] = miss;

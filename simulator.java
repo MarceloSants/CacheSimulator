@@ -12,7 +12,7 @@ public class simulator{
         CacheClass cache = new CacheClass(Integer.parseInt(entrada[1]), Integer.parseInt(entrada[2]), Integer.parseInt(entrada[3]), entrada[4].charAt(0));
         
         try{
-            int info[];
+            double info[];
             File arquivo = new File(entrada[6]);
 
             FileInputStream in = new FileInputStream(arquivo); 
@@ -29,7 +29,10 @@ public class simulator{
             */
             info = cache.getInfo();
             //-----------------------Tratamento da informação
+            System.out.println("Taxa de hit:" + info[0]);
+            System.out.println("Valor de i:" + i);
             info[0] = info[0]/i; //Taxa de hit
+            System.out.println("Taxa de hit:" + info[0]);
             info[2] = info[2]/info[1]; //Taxa de miss compulsório
             info[3] = info[3]/info[1]; //Taxa de miss de capacidade
             info[4] = info[4]/info[1]; //Taxa de miss de conflito
