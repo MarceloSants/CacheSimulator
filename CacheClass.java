@@ -24,8 +24,8 @@ public class CacheClass{
         cada bloco para inicializar passando o tamanho do bloco. 
         */
         cache = new BlockClass[nsets][assoc];
-        for(int i = 0; i < cache.length; i++) {
-            for(int j = 0; j < cache.length; j++) {
+        for(int i = 0; i < nsets; i++) {
+            for(int j = 0; j < assoc; j++) {
                 cache[i][j] = new BlockClass(bsize);
             }
         }
@@ -38,7 +38,7 @@ public class CacheClass{
         int i;
         //System.out.print(endereco + " "); 
 
-        if(busca(endereco)){
+        if(busca(pos, endereco)){
             hit++;
         }else{
             //"i" é a via do conjunto. Se for assoc = 1 (Mapeamento direto) recebe 0, senão recebe um valor aleatório. 
@@ -54,7 +54,7 @@ public class CacheClass{
                 compulsorio++;
                 cacheCount++;
                 cache[pos][i].validate();
-                cache[pos][i].espaco = endereco;
+                cache[pos][i].espaco = calc(endereco);
             }else{
     
                 //miss (conflito ou capacidade)
@@ -64,7 +64,7 @@ public class CacheClass{
                     conflito++;
                 }
                 miss++;
-                cache[pos][i].espaco = endereco;
+                cache[pos][i].espaco = calc(endereco);
             
             }
         }
@@ -72,12 +72,12 @@ public class CacheClass{
         
     }
 
-    private boolean busca(int end){
+    private boolean busca(int pos, int end){
 
         for(int i = 0; i < assoc; i++) {
             for(int j = 0; j < bsize; j++){
-                if(cache[nsets][i].espaco[j] == end){
-                    if(cache[nsets][i].validade){
+                if(cache[pos][i].espaco[j] == end){
+                    if(cache[pos][i].validade){
                         return true;
                     }
                 }
@@ -87,9 +87,10 @@ public class CacheClass{
         return false;
     }
     private int[] calc(int end){
-        int ends[] = new int[bsize];
 
+        int ends[] = new int[bsize];
         int inicio = end - (end%bsize);
+
         for(int i = 0; i < bsize; i++){
             ends[i] = inicio + i;
         }
@@ -112,8 +113,8 @@ public class CacheClass{
         info[0] = hit;
         info[1] = miss;
         info[2] = compulsorio;
-        info[3] = conflito;
-        info[4] = capacidade;
+        info[3] = capacidade;
+        info[4] = conflito;
 
         return info;
     }
