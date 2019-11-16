@@ -29,18 +29,39 @@ public class simulator{
             */
             info = cache.getInfo();
             //-----------------------Tratamento da informação
-            System.out.println("Taxa de hit:" + info[0]);
-            System.out.println("Valor de i:" + i);
+            //System.out.println("Taxa de hit:" + info[0]);
+            //System.out.println("Valor de i:" + i);
             info[0] = info[0]/i; //Taxa de hit
-            System.out.println("Taxa de hit:" + info[0]);
+            //System.out.println("Taxa de hit:" + info[0]);
             info[2] = info[2]/info[1]; //Taxa de miss compulsório
             info[3] = info[3]/info[1]; //Taxa de miss de capacidade
             info[4] = info[4]/info[1]; //Taxa de miss de conflito
             info[1] = info[1]/i; //Taxa de miss
+
             System.out.println();
-            System.out.print(i + ", ");
-            for(int j = 0; j < 5; j++){
-                System.out.print(info[j] + ", ");
+
+            if(Integer.parseInt(entrada[5]) == 1){
+                
+                System.out.print(i + ", ");
+                for(int j = 0; j < 5; j++){
+                    System.out.print(info[j]);
+                    if(j != 4){
+                        System.out.print(", ");
+                    }
+                }
+            }else{
+                System.out.print("Numero de acessos: ");
+                System.out.println(i);
+                System.out.print("Taxa de hit: ");
+                System.out.println(info[0]);
+                System.out.print("Taxa de miss: ");
+                System.out.println(info[1]);
+                System.out.print("Taxa de miss compulsorio: ");
+                System.out.println(info[2]);
+                System.out.print("Taxa de miss de capacidade: ");
+                System.out.println(info[3]);
+                System.out.print("Taxa de miss de conflito: ");
+                System.out.println(info[4]);
             }
 
             lerIn.close();

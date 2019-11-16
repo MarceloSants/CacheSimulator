@@ -40,6 +40,7 @@ public class CacheClass{
 
         if(busca(pos, endereco)){
             hit++;
+            //System.out.println("Hit!");
         }else{
             //"i" é a via do conjunto. Se for assoc = 1 (Mapeamento direto) recebe 0, senão recebe um valor aleatório. 
             if(assoc == 1){
@@ -47,7 +48,7 @@ public class CacheClass{
             }else{
                 i = gerador.nextInt(assoc);
             }
-
+            //System.out.println("via: " + i);
             if(!cache[pos][i].validade){
                 //Miss compulsório
                 miss++;
@@ -56,10 +57,14 @@ public class CacheClass{
                 cache[pos][i].validate();
                 cache[pos][i].espaco = calc(endereco);
             }else{
-    
-                //miss (conflito ou capacidade)
-                if(cacheCount == cache.length){// Se a cache está cheia é capacidade, senão conflito
-                    capacidade++;
+                if(assoc != 1){
+                    if(cacheCount == cache.length){// Se a cache está cheia é capacidade, senão conflito
+                        capacidade++;
+                    }else{
+                        conflito++;
+                    }
+                    //miss (conflito ou capacidade)
+                    //System.out.println("Cache count: " + cacheCount + "/" + cache.length);
                 }else{
                     conflito++;
                 }
