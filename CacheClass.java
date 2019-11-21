@@ -46,6 +46,7 @@ public class CacheClass{
             if(assoc == 1){
                 i = 0;
             }else{
+                //escolhe a via usando política random
                 i = gerador.nextInt(assoc);
             }
             //System.out.println("via: " + i);
@@ -57,24 +58,27 @@ public class CacheClass{
                 cache[pos][i].validate();
                 cache[pos][i].espaco = calc(endereco);
             }else{
-                if(assoc != 1){
+                if(assoc == 1){
+                    conflito++;
+                }
+                else if(assoc == nsets){
+                    capacidade++;
+                }
+                else{
+                    
                     if(cacheCount == cache.length){// Se a cache está cheia é capacidade, senão conflito
                         capacidade++;
                     }else{
                         conflito++;
                     }
-                    //miss (conflito ou capacidade)
-                    //System.out.println("Cache count: " + cacheCount + "/" + cache.length);
-                }else{
-                    conflito++;
                 }
+                                
                 miss++;
                 cache[pos][i].espaco = calc(endereco);
             
             }
         }
-        //Teste commit vsCode
-        
+        //Teste commit vsCode        
     }
 
     private boolean busca(int pos, int end){
