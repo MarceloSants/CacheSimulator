@@ -1,11 +1,13 @@
 public class BlockClass{
 
     boolean validade;
-    int espaco[];
+    int tag;
+    //int espaco[];
 
     public BlockClass(int tam){
         validade= false;
-        espaco = new int[tam];
+        tag = 0;
+        //espaco = new int[tam];
     }
 
     public void validate(){

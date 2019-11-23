@@ -10,7 +10,7 @@ public class CacheClass{
     public CacheClass(int nsets, int bsize, int assoc, char sub){
 
         this.nsets = nsets;
-        this.bsize = bsize/4;
+        this.bsize = bsize;
         this.assoc = assoc;
         this.sub = sub;
         cacheCount = 0;
@@ -32,13 +32,25 @@ public class CacheClass{
         gerador = new Random();
     }
 
-    public void putCache(int endereco){
+    public void putCache(int indice, int tag){
 
-        int pos = endereco % (nsets); //"pos" é o conjunto para qual será mapeada a informação. (Linha da matriz "cache")
+        // System.out.println("Tag: " + tag);
+        // System.out.println("Indice: " + indice);
+        double end = indice;
+        
+        double block = bsize;
+        //System.out.println("end: " + end);
+        double posd = (end / block); //"pos" é o conjunto para qual será mapeada a informação. (Linha da matriz "cache")
+        
+        //System.out.println("posd: " + posd);
+        int pos = (int) (posd %nsets);
+
+        //System.out.println("pos: " + pos);
+
         int i;
-        //System.out.print(endereco + " "); 
-
-        if(busca(pos, endereco)){
+        //System.out.println(pos + " pos "); 
+        
+        if(busca(pos, tag)){
             hit++;
             //System.out.println("Hit!");
         }else{
@@ -49,53 +61,55 @@ public class CacheClass{
                 //escolhe a via usando política random
                 i = gerador.nextInt(assoc);
             }
-            //System.out.println("via: " + i);
-            if(!cache[pos][i].validade){
+            
+            
+            if(buscaCompulsorio(pos, tag)){
                 //Miss compulsório
                 miss++;
                 compulsorio++;
-                cacheCount++;
-                cache[pos][i].validate();
-                cache[pos][i].espaco = calc(endereco);
+                
             }else{
-                if(assoc == 1){
-                    conflito++;
-                }
-                else if(assoc == nsets){
+                if(cacheCount == cache.length){// Se a cache está cheia é capacidade, senão conflito
                     capacidade++;
-                }
-                else{
-                    
-                    if(cacheCount == cache.length){// Se a cache está cheia é capacidade, senão conflito
-                        capacidade++;
-                    }else{
-                        conflito++;
-                    }
+                }else{
+                    conflito++;
                 }
                                 
                 miss++;
-                cache[pos][i].espaco = calc(endereco);
-            
+                cache[pos][i].tag = tag;
+                
             }
+            
         }
-        //Teste commit vsCode        
+        //System.out.println(cacheCount);
     }
 
+    private boolean buscaCompulsorio(int pos, int end){
+        for(int i = 0; i < assoc; i++) {
+            if(!cache[pos][i].validade){
+                cache[pos][i].validate();
+                cache[pos][i].tag = end;
+                cacheCount++;
+                return true;
+            }
+        }
+        return false;
+    }
     private boolean busca(int pos, int end){
 
         for(int i = 0; i < assoc; i++) {
-            for(int j = 0; j < bsize; j++){
-                if(cache[pos][i].espaco[j] == end){
-                    if(cache[pos][i].validade){
-                        return true;
-                    }
+            
+            if(cache[pos][i].tag == end){
+                if(cache[pos][i].validade){
+                    return true;
                 }
             }
+        
         }
 
         return false;
     }
-    private int[] calc(int end){
+    /*private int[] calc(int end){
 
         int ends[] = new int[bsize];
         int inicio = end - (end%bsize);
@@ -105,12 +119,11 @@ public class CacheClass{
         }
 
         return ends;
-    }
+    }*/
     /*
     public int getHits(){
         return hit;
     }
-
     public int getMisses(){
         return miss;
     }
@@ -128,4 +141,3 @@ public class CacheClass{
         return info;
     }
 }
-
