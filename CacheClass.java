@@ -30,6 +30,7 @@ public class CacheClass{
             }
         }
         gerador = new Random();
+
     }
 
     public void putCache(int indice, int tag){
@@ -44,9 +45,7 @@ public class CacheClass{
         
         //System.out.println("posd: " + posd);
         int pos = (int) (posd %nsets);
-
-        //System.out.println("pos: " + pos);
-
+        
         int i;
         //System.out.println(pos + " pos "); 
         
@@ -62,10 +61,8 @@ public class CacheClass{
                 i = gerador.nextInt(assoc);
             }
             
-            
             if(buscaCompulsorio(pos, tag)){
                 //Miss compulsório
-                miss++;
                 compulsorio++;
                 
             }else{
@@ -74,32 +71,32 @@ public class CacheClass{
                 }else{
                     conflito++;
                 }
-                                
-                miss++;
                 cache[pos][i].tag = tag;
-                
             }
-            
+            miss++;
         }
+
         //System.out.println(cacheCount);
     }
 
-    private boolean buscaCompulsorio(int pos, int end){
+    private boolean buscaCompulsorio(int pos, int tag){
         for(int i = 0; i < assoc; i++) {
+            //System.out.print(i);
             if(!cache[pos][i].validade){
                 cache[pos][i].validate();
-                cache[pos][i].tag = end;
+                cache[pos][i].tag = tag;
                 cacheCount++;
                 return true;
             }
         }
+        //System.out.println(" a");
         return false;
     }
-    private boolean busca(int pos, int end){
+    private boolean busca(int pos, int tag){
 
         for(int i = 0; i < assoc; i++) {
             
-            if(cache[pos][i].tag == end){
+            if(cache[pos][i].tag == tag){
                 if(cache[pos][i].validade){
                     return true;
                 }
