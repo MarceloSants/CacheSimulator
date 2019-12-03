@@ -4,20 +4,20 @@ import java.util.Scanner;
 public class simulator{
     public static void main(String[] args) {
 
-        Scanner ler = new Scanner(System.in);
-        /*Campos do vetor "entrada" : 0 - Nome do programa; 1 - nsets; 2 - bsize; 3 - assoc;
-        4 - politica; 5 - flag de saida; 6 - arquivo.
+        Scanner read = new Scanner(System.in);
+        /*fields of vector "input" : 0 - Program name; 1 - nsets; 2 - bsize; 3 - assoc;
+        4 - politics; 5 - flag of output; 6 - file.
         */
-        String entrada[] = new String[7];
-        int tag, indice, offset;
-        System.out.print("Entre com as informacoes da cache:");
-        entrada = ler.nextLine().split(" ");
+        String input[] = new String[7];
+        int tag, index, offset;
+        System.out.print("input cache info:");
+        input = read.nextLine().split(" ");
 
-        offset = calcFat(Integer.parseInt(entrada[2]));
-        indice = calcFat(Integer.parseInt(entrada[1]));
+        offset = calcFat(Integer.parseInt(input[2]));
+        index = calcFat(Integer.parseInt(input[1]));
         tag = 32 - (offset + indice);
 
-        CacheClass cache = new CacheClass(Integer.parseInt(entrada[1]), Integer.parseInt(entrada[2]), Integer.parseInt(entrada[3]), entrada[4].charAt(0));
+        CacheClass cache = new CacheClass(Integer.parseInt(input[1]), Integer.parseInt(input[2]), Integer.parseInt(input[3]), input[4].charAt(0));
         
         // int k = 7;
         // int x = k >> 1;
@@ -26,39 +26,39 @@ public class simulator{
 
         try{
             double info[];
-            File arquivo = new File(entrada[6]);
+            File file = new File(input[6]);
 
-            FileInputStream in = new FileInputStream(arquivo); 
-            DataInputStream lerIn = new DataInputStream(in);
-            int i = (int) (arquivo.length() / 4);
+            FileInputStream in = new FileInputStream(file); 
+            DataInputStream readIn = new DataInputStream(in);
+            int i = (int) (file.length() / 4);
             
             for(int j = 0; j < i; j++){
 
-                int end = lerIn.readInt();
+                int end = readIn.readInt();
                 int endTag;
 
-                endTag = end >> (indice + offset);
+                endTag = end >> (index + offset);
                 
-                //endIndice = (end << tag) >> (tag + offset);
-                //dendIndice = endIndice ;
+                //endIndex = (end << tag) >> (tag + offset);
+                //dendIndex = endIndex ;
 
-                cache.putCache(end, endTag);//, tag, indice, offset
+                cache.putCache(end, endTag);//, tag, index, offset
             }
             
             info = cache.getInfo();
-            //-----------------------Tratamento da informação
-            //System.out.println("Taxa de hit:" + info[0]);
-            //System.out.println("Valor de i:" + i);
-            info[0] = info[0]/i; //Taxa de hit
-            //System.out.println("Taxa de hit:" + info[0]);
-            info[2] = info[2]/info[1]; //Taxa de miss compulsório
-            info[3] = info[3]/info[1]; //Taxa de miss de capacidade
-            info[4] = info[4]/info[1]; //Taxa de miss de conflito
-            info[1] = info[1]/i; //Taxa de miss
+            //-----------------------Processing of info
+            //System.out.println("Hit tax:" + info[0]);
+            //System.out.println("i value:" + i);
+            info[0] = info[0]/i; //Hit tax
+            //System.out.println("Hit tax:" + info[0]);
+            info[2] = info[2]/info[1]; //Compulsory miss tax
+            info[3] = info[3]/info[1]; //Capacity miss tax
+            info[4] = info[4]/info[1]; //Conflict miss tax
+            info[1] = info[1]/i; //Miss tax
 
             System.out.println();
 
-            if(Integer.parseInt(entrada[5]) == 1){
+            if(Integer.parseInt(input[5]) == 1){
                 
                 System.out.print(i + ", ");
                 for(int j = 0; j < 5; j++){
@@ -68,24 +68,24 @@ public class simulator{
                     }
                 }
             }else{
-                System.out.print("Numero de acessos: ");
+                System.out.print("Entry numbers: ");
                 System.out.println(i);
-                System.out.print("Taxa de hit: ");
+                System.out.print("Hit tax: ");
                 System.out.println(info[0]);
-                System.out.print("Taxa de miss: ");
+                System.out.print("Miss tax: ");
                 System.out.println(info[1]);
-                System.out.print("Taxa de miss compulsorio: ");
+                System.out.print("Compulsory miss tax: ");
                 System.out.println(info[2]);
-                System.out.print("Taxa de miss de capacidade: ");
+                System.out.print("Capacity miss tax: ");
                 System.out.println(info[3]);
-                System.out.print("Taxa de miss de conflito: ");
+                System.out.print("Conflict miss tax: ");
                 System.out.println(info[4]);
             }
 
-            lerIn.close();
-            ler.close();
+            readIn.close();
+            read.close();
         }catch(IOException e){
-            System.out.println("Erro!");
+            System.out.println("Error!");
         }
         
     }
@@ -93,16 +93,16 @@ public class simulator{
     private static int calcFat(int blocksize){
 
         int block = blocksize;
-        int contador = 0;
+        int counter = 0;
 
-        if(blocksize%2 == 0){ //Se for par
-            //divide por 2 até resultar em 1, enquanto contador guarda o expoente da fatoração
+        if(blocksize%2 == 0){ //If pair
+            //divide by 2 until result 1, until counter save the factorization exponent
             while(block != 1){ 
                 block = block/2;
-                contador++;
+                counter++;
             }
         }
 
-        return contador;
+        return counter;
     }
 }
