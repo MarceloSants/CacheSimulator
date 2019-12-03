@@ -1,16 +1,16 @@
 public class BlockClass{
 
-    boolean validade;
+    boolean validity;
     int tag;
-    //int espaco[];
+    //int space[];
 
-    public BlockClass(int tam){
-        validade= false;
+    public BlockClass(int size){
+        validity= false;
         tag = 0;
-        //espaco = new int[tam];
+        //space = new int[size];
     }
 
     public void validate(){
-        validade = true;
+        validity = true;
     }
 }
