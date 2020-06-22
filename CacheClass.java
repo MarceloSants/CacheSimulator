@@ -4,9 +4,9 @@ public class CacheClass{
     //int cache[][];
     BlockClass cache[][];
     int nsets, bsize, assoc;
-    int hit, miss, cacheCount, compulsorio, conflito, capacidade;
+    int hit, miss, cacheCount, compulsory, conflict, capacity;
     char sub;
-    Random gerador;
+    Random generator;
     public CacheClass(int nsets, int bsize, int assoc, char sub){
 
         this.nsets = nsets;
@@ -14,14 +14,14 @@ public class CacheClass{
         this.assoc = assoc;
         this.sub = sub;
         cacheCount = 0;
-        compulsorio = 0;
-        conflito = 0;
-        capacidade = 0;
+        compulsory = 0;
+        conflict = 0;
+        capacity = 0;
         hit = 0;
         miss = 0;
 
-        /*Inicializando a cache como um vetor de objetos da classe BlockClass e percorrendo 
-        cada bloco para inicializar passando o tamanho do bloco. 
+        /*Initializing the cache as a vector of BlockClass objects and walking through
+        each block to initialize by passing the block size. 
         */
         cache = new BlockClass[nsets][assoc];
         for(int i = 0; i < nsets; i++) {
@@ -29,19 +29,19 @@ public class CacheClass{
                 cache[i][j] = new BlockClass(bsize);
             }
         }
-        gerador = new Random();
+        generator = new Random();
 
     }
 
-    public void putCache(int indice, int tag){
+    public void putCache(int index, int tag){
 
         // System.out.println("Tag: " + tag);
-        // System.out.println("Indice: " + indice);
-        double end = indice;
+        // System.out.println("Index: " + index);
+        double end = index;
         
         double block = bsize;
         //System.out.println("end: " + end);
-        double posd = (end / block); //"pos" é o conjunto para qual será mapeada a informação. (Linha da matriz "cache")
+        double posd = (end / block); //"pos" is the set to which the information will be mapped. (Cache matrix line)
         
         //System.out.println("posd: " + posd);
         int pos = (int) (posd %nsets);
@@ -49,27 +49,27 @@ public class CacheClass{
         int i;
         //System.out.println(pos + " pos "); 
         
-        if(busca(pos, tag)){
+        if(search(pos, tag)){
             hit++;
             //System.out.println("Hit!");
         }else{
-            //"i" é a via do conjunto. Se for assoc = 1 (Mapeamento direto) recebe 0, senão recebe um valor aleatório. 
+            //"i" is the path of the group. If assoc = 1 (Direct Mapping) gets 0, otherwise it gets a random value. 
             if(assoc == 1){
                 i = 0;
             }else{
-                //escolhe a via usando política random
-                i = gerador.nextInt(assoc);
+                //choose the route using random policy
+                i = generator.nextInt(assoc);
             }
             
-            if(buscaCompulsorio(pos, tag)){
-                //Miss compulsório
-                compulsorio++;
+            if(searchCompulsory(pos, tag)){
+                //Miss compulsory
+                compulsory++;
                 
             }else{
-                if(cacheCount == cache.length){// Se a cache está cheia é capacidade, senão conflito
-                    capacidade++;
+                if(cacheCount == cache.length){// If the cache is full is capacity, otherwise conflict
+                    capacity++;
                 }else{
-                    conflito++;
+                    conflict++;
                 }
                 cache[pos][i].tag = tag;
             }
@@ -79,10 +79,10 @@ public class CacheClass{
         //System.out.println(cacheCount);
     }
 
-    private boolean buscaCompulsorio(int pos, int tag){
+    private boolean searchCompulsory(int pos, int tag){
         for(int i = 0; i < assoc; i++) {
             //System.out.print(i);
-            if(!cache[pos][i].validade){
+            if(!cache[pos][i].validity){
                 cache[pos][i].validate();
                 cache[pos][i].tag = tag;
                 cacheCount++;
@@ -92,12 +92,12 @@ public class CacheClass{
         //System.out.println(" a");
         return false;
     }
-    private boolean busca(int pos, int tag){
+    private boolean search(int pos, int tag){
 
         for(int i = 0; i < assoc; i++) {
             
             if(cache[pos][i].tag == tag){
-                if(cache[pos][i].validade){
+                if(cache[pos][i].validity){
                     return true;
                 }
             }
@@ -109,10 +109,10 @@ public class CacheClass{
     /*private int[] calc(int end){
 
         int ends[] = new int[bsize];
-        int inicio = end - (end%bsize);
+        int start = end - (end%bsize);
 
         for(int i = 0; i < bsize; i++){
-            ends[i] = inicio + i;
+            ends[i] = start + i;
         }
 
         return ends;
@@ -131,9 +131,9 @@ public class CacheClass{
 
         info[0] = hit;
         info[1] = miss;
-        info[2] = compulsorio;
-        info[3] = capacidade;
-        info[4] = conflito;
+        info[2] = compulsory;
+        info[3] = capacity;
+        info[4] = conflict;
 
         return info;
     }
